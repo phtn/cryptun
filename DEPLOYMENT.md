@@ -2,7 +2,22 @@
 
 ## Quick Deployment
 
-### 1. Build and Deploy (Automated)
+### 1. Google Cloud Platform (Recommended)
+```bash
+# Create a new GCloud instance
+./gcloud-helpers.sh create my-cryptun-server us-central1-a
+
+# Deploy Cryptun to the instance
+./deploy-gcloud.sh my-cryptun-server us-central1-a
+
+# Create firewall rules
+./gcloud-helpers.sh firewall my-cryptun-server us-central1-a
+
+# Get access URLs
+./gcloud-helpers.sh ip my-cryptun-server us-central1-a
+```
+
+### 2. Traditional SSH Deployment
 ```bash
 # Deploy to your VM
 ./deploy.sh YOUR_VM_IP root
