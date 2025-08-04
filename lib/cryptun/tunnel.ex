@@ -17,8 +17,10 @@ defmodule Cryptun.Tunnel do
     :subdomain,
     :client_pid,
     :client_ref,
+    :api_key,
     pending_requests: %{},
-    request_counter: 0
+    request_counter: 0,
+    created_at: nil
   ]
   
   ## Client API
@@ -46,13 +48,16 @@ defmodule Cryptun.Tunnel do
   def init(opts) do
     tunnel_id = Keyword.fetch!(opts, :tunnel_id)
     subdomain = Keyword.get(opts, :subdomain, generate_subdomain())
+    api_key = Keyword.get(opts, :api_key)
     
     state = %__MODULE__{
       tunnel_id: tunnel_id,
-      subdomain: subdomain
+      subdomain: subdomain,
+      api_key: api_key,
+      created_at: DateTime.utc_now()
     }
     
-    Logger.info("Started tunnel #{tunnel_id} with subdomain #{subdomain}")
+    Logger.info("Started tunnel #{tunnel_id} with subdomain #{subdomain} (API key: #{if api_key, do: "present", else: "none"})")
     
     {:ok, state}
   end

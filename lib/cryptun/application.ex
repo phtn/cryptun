@@ -11,6 +11,9 @@ defmodule Cryptun.Application do
       # PubSub for real-time updates
       {Phoenix.PubSub, name: Cryptun.PubSub},
       
+      # Authentication system
+      Cryptun.Auth,
+      
       # Registry for tunnel routing
       {Registry, keys: :unique, name: Cryptun.TunnelRegistry},
       
@@ -21,13 +24,22 @@ defmodule Cryptun.Application do
       Cryptun.ClientManager,
       
       # Simple web dashboard
-      {Plug.Cowboy, scheme: :http, plug: Cryptun.SimpleWeb, options: [port: 4000]},
+      {Plug.Cowboy, scheme: :http, plug: Cryptun.SimpleWeb, options: [port: dashboard_port()]},
       
       # HTTP Gateway server (on different port)
-      {Plug.Cowboy, scheme: :http, plug: Cryptun.Gateway, options: [port: 4001]}
+      {Plug.Cowboy, scheme: :http, plug: Cryptun.Gateway, options: [port: gateway_port()]}
     ]
 
     opts = [strategy: :one_for_one, name: Cryptun.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  # Configuration helpers
+  defp dashboard_port do
+    Application.get_env(:cryptun, :dashboard_port, 4000)
+  end
+
+  defp gateway_port do
+    Application.get_env(:cryptun, :gateway_port, 4001)
   end
 end

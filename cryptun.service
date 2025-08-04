@@ -1,0 +1,27 @@
+[Unit]
+Description=Cryptun Tunnel Service
+After=network.target
+
+[Service]
+Type=exec
+User=cryptun
+Group=cryptun
+WorkingDirectory=/opt/cryptun
+ExecStart=/opt/cryptun/bin/cryptun start
+ExecStop=/opt/cryptun/bin/cryptun stop
+Restart=on-failure
+RestartSec=5
+Environment=CRYPTUN_DASHBOARD_PORT=4000
+Environment=CRYPTUN_GATEWAY_PORT=4001
+Environment=SECRET_KEY_BASE=CHANGE_ME_IN_PRODUCTION
+Environment=MIX_ENV=prod
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/cryptun
+
+[Install]
+WantedBy=multi-user.target
