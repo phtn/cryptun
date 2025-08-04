@@ -21,3 +21,5 @@ cryptun-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+sh

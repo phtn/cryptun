@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" class="[scrollbar-gutter:stable]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={Plug.CSRFProtection.get_csrf_token()} />
+    <title><%= assigns[:page_title] || "Dashboard" %> · Cryptun</title>
+    <link phx-track-static rel="stylesheet" href="/assets/app.css" />
+    <script defer phx-track-static type="text/javascript" src="/assets/app.js">
+    </script>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 0; background: #f8fafc; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+      .header { background: white; border-bottom: 1px solid #e2e8f0; padding: 1rem 0; margin-bottom: 2rem; }
+      .nav { display: flex; gap: 1rem; align-items: center; }
+      .nav a { text-decoration: none; color: #4a5568; padding: 0.5rem 1rem; border-radius: 0.375rem; }
+      .nav a:hover { background: #edf2f7; }
+      .nav a.active { background: #3182ce; color: white; }
+      .card { background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem; margin-bottom: 1rem; }
+      .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; }
+      .badge-green { background: #c6f6d5; color: #22543d; }
+      .badge-red { background: #fed7d7; color: #742a2a; }
+      .badge-yellow { background: #fefcbf; color: #744210; }
+      .btn { display: inline-block; padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; font-weight: 500; border: none; cursor: pointer; }
+      .btn-primary { background: #3182ce; color: white; }
+      .btn-danger { background: #e53e3e; color: white; }
+      .btn:hover { opacity: 0.9; }
+      .grid { display: grid; gap: 1rem; }
+      .grid-2 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+      .text-sm { font-size: 0.875rem; }
+      .text-gray { color: #718096; }
+      .mb-4 { margin-bottom: 1rem; }
+      .mt-4 { margin-top: 1rem; }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <nav class="nav">
+          <h1 style="margin: 0; color: #2d3748; font-size: 1.5rem;">🔒 Cryptun</h1>
+          <a href="/" class={if @conn.request_path == "/", do: "active", else: ""}>Dashboard</a>
+          <a href="/tunnels" class={if @conn.request_path == "/tunnels", do: "active", else: ""}>Tunnels</a>
+        </nav>
+      </div>
+    </div>
+    <div class="container">
+      <%= if Phoenix.Flash.get(@flash, :info) do %>
+        <div class="flash flash-info">
+          <%= Phoenix.Flash.get(@flash, :info) %>
+        </div>
+      <% end %>
+      <%= if Phoenix.Flash.get(@flash, :error) do %>
+        <div class="flash flash-error">
+          <%= Phoenix.Flash.get(@flash, :error) %>
+        </div>
+      <% end %>
+      <%= @inner_content %>
+    </div>
+  </body>
+</html>

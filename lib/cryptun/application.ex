@@ -8,6 +8,9 @@ defmodule Cryptun.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      # PubSub for real-time updates
+      {Phoenix.PubSub, name: Cryptun.PubSub},
+      
       # Registry for tunnel routing
       {Registry, keys: :unique, name: Cryptun.TunnelRegistry},
       
@@ -17,8 +20,11 @@ defmodule Cryptun.Application do
       # Client connection manager
       Cryptun.ClientManager,
       
-      # HTTP Gateway server
-      {Plug.Cowboy, scheme: :http, plug: Cryptun.Gateway, options: [port: 4000]}
+      # Simple web dashboard
+      {Plug.Cowboy, scheme: :http, plug: Cryptun.SimpleWeb, options: [port: 4000]},
+      
+      # HTTP Gateway server (on different port)
+      {Plug.Cowboy, scheme: :http, plug: Cryptun.Gateway, options: [port: 4001]}
     ]
 
     opts = [strategy: :one_for_one, name: Cryptun.Supervisor]
